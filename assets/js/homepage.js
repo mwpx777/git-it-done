@@ -23,6 +23,8 @@ function getUsersRepos(user){
 
     // make a request to the url
     fetch(apiUrl).then(function(response){
+        // checking if username exists
+        if(response.ok){
         // converts the response to json
         response.json().then(function(data){
             // sends data and user info to displayRepos()
@@ -30,7 +32,14 @@ function getUsersRepos(user){
             console.log(data);
             console.log(apiUrl);
         });
-    });
+        }else{
+            alert('Error: ' + response.statusText)   //WHERE DOES THIS COME FROM??
+        }
+    })
+        // this will get chained onto end of fetch(apiUrl) if network error
+        .catch(function(error){
+            alert('Unable to connect to GitHub');
+        })
 };
 
 function formSubmitHandler(event){
@@ -49,6 +58,12 @@ function formSubmitHandler(event){
 };
 // repos is the list of repos, searchTerm is the username
 function displayRepos(repos, searchTerm){
+    // check to see if there are any repos for the username
+    if(repos.length === 0){
+        // if none found, display message and then return to beginning of function
+        repoContainerEl.textContent = "No repositories found for" + nameInputEL.value.trim();
+        return;
+    }
     // clear old content from repoContainerEl search list 
     repoContainerEl.textContent = "";
     // will display repoSearchTerm text value
@@ -70,7 +85,7 @@ function displayRepos(repos, searchTerm){
     titleEl.textContent = repoName;
     // append to container
     repoEl.appendChild(titleEl);
-    // create status element
+    // create status element for issues 
     var statusEl = document.createElement('span');
     // create class for statusEl
     statusEl.classList = "flex-row align-center";
