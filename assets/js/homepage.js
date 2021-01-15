@@ -9,7 +9,8 @@
 // });
 // }
 // getUsersRepos();
-
+let repoContainerEl = document.querySelector("#repos-container");
+let repoSearchTerm = document.querySelector("#repo-search-term");
 let userFormEl = document.querySelector('#user-form');
 let nameInputEL = document.querySelector('#username');
 
@@ -22,7 +23,10 @@ function getUsersRepos(user){
 
     // make a request to the url
     fetch(apiUrl).then(function(response){
+        // converts the response to json
         response.json().then(function(data){
+            // sends data and user info to displayRepos()
+            displayRepos(data, user);
             console.log(data);
             console.log(apiUrl);
         });
@@ -34,7 +38,7 @@ function formSubmitHandler(event){
     // get value from input element
     var username = nameInputEL.value.trim();
     if (username){
-        //this will pass 'username' into getUsersRepos function above
+        //this will pass 'username' into getUsersRepos function above as argument
         getUsersRepos(username);
         // this clears the nameInputEl 
         nameInputEL.value = "";
@@ -43,6 +47,45 @@ function formSubmitHandler(event){
     }
 
 };
+// repos is the list of repos, searchTerm is the username
+function displayRepos(repos, searchTerm){
+    // clear old content from repoContainerEl search list 
+    repoContainerEl.textContent = "";
+    // will display repoSearchTerm text value
+    repoSearchTerm.textContent = searchTerm;
+    // console.log(repos);
+    // console.log(searchTerm);
 
+    // loop over repos
+    for (var i = 0; i<repos.length; i++){
+    // format repo name getting 'owner.login' and 'name' from each index in array 
+    var repoName = repos[i].owner.login + "/" + repos[i].name;
+    // create a container for each repo
+    var repoEl = document.createElement('div');
+    // create class for repoEl
+    repoEl.classList = "list-item flex-row justify-space-between align-center";
+    // create a span element to hold repository name
+    var titleEl = document.createElement('span');
+    //add repoName variable from above into titleEl <span>
+    titleEl.textContent = repoName;
+    // append to container
+    repoEl.appendChild(titleEl);
+    // create status element
+    var statusEl = document.createElement('span');
+    // create class for statusEl
+    statusEl.classList = "flex-row align-center";
+    // check if current repo has issues
+    if (repos[i].open_issues_count>0){
+        statusEl.innerHTML = "<i class='fas fa-times status-icon icon-danger'></i>" + repos[i].open_issues_count + " issue(s)";
+    }else{
+        statusEl.innerHTML = "<i class='fas fa-check-square status-icon icon-success'></i>";
+    }
+    
+    // append to container
+    repoEl.appendChild(statusEl);
+    // append container to DOM  repoContainerEl is empty <div id="repos-container"> 
+    repoContainerEl.appendChild(repoEl);
+}
+};
 // argument in this function call will get passed to 'user' in function above
 getUsersRepos()
