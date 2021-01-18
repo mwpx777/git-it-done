@@ -13,6 +13,7 @@ let repoContainerEl = document.querySelector("#repos-container");
 let repoSearchTerm = document.querySelector("#repo-search-term");
 let userFormEl = document.querySelector('#user-form');
 let nameInputEL = document.querySelector('#username');
+let languageButtonsEl = document.querySelector("#language-buttons")
 
 userFormEl.addEventListener('submit', formSubmitHandler)
 
@@ -121,5 +122,19 @@ function getFeaturedRepos(language){
         }
     });
 };
+
+function buttonClickHandler(event){
+    // this will assign the 'data-language' value from the clicked button to this variable 'language'
+    var language = event.target.getAttribute("data-language");
+        if(language){
+            getFeaturedRepos(language);
+        }
+        // clear out previous content
+        repoContainerEl.textContent ="";
+};
 // argument in this function call will get passed to 'user' in function above
 getUsersRepos()
+
+languageButtonsEl.addEventListener('click', buttonClickHandler)
+
+// call getFeaturedRepos function passing the argument 'language' from buttonClickHandler function
