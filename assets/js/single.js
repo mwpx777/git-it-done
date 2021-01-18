@@ -74,10 +74,18 @@ function getRepoName(){
     var queryString = document.location.search;
     // this splits the document.location.search at = and takes array [1]
     var repoName = queryString.split("=")[1];
+
+    // if there is a valid repoName, do this
+    if(repoName){
+    
     // this passes repoName into getRepoIssues function
     getRepoIssues(repoName)
     // this adds the repoName to top of page in search result
     repoNameEl.textContent = repoName;
+    }else{
+        // if repoName was not entered, redirect to homepage
+        document.location.replace("./index.html");
+    }
 };
 
 
