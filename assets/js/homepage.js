@@ -61,7 +61,7 @@ function displayRepos(repos, searchTerm){
     // check to see if there are any repos for the username
     if(repos.length === 0){
         // if none found, display message and then return to beginning of function
-        repoContainerEl.textContent = "No repositories found for" + nameInputEL.value.trim();
+        repoContainerEl.textContent = "No repositories found for" + nameInputEl.value.trim();
         return;
     }
     // clear old content from repoContainerEl search list 
@@ -76,9 +76,11 @@ function displayRepos(repos, searchTerm){
     // format repo name getting 'owner.login' and 'name' from each index in array 
     var repoName = repos[i].owner.login + "/" + repos[i].name;
     // create a container for each repo
-    var repoEl = document.createElement('div');
+    var repoEl = document.createElement('a');
     // create class for repoEl
     repoEl.classList = "list-item flex-row justify-space-between align-center";
+    // create href to link to single-repo.html passing in repoName as query
+    repoEl.setAttribute("href", "./single-repo.html?repo=" + repoName);
     // create a span element to hold repository name
     var titleEl = document.createElement('span');
     //add repoName variable from above into titleEl <span>

@@ -1,5 +1,6 @@
 var issuesContainerEl = document.querySelector('#issues-container');
 var limitWarningEl = document.querySelector("#limit-warning");
+var repoNameEl = document.querySelector("#repo-name");
 
 function getRepoIssues(repo){
     
@@ -67,4 +68,17 @@ function displayWarning(repo){
     limitWarningEl.appendChild(linkEl);
 };
 
-getRepoIssues("facebook/react")
+
+function getRepoName(){
+    // this takes the repo name from the search query on index.html
+    var queryString = document.location.search;
+    // this splits the document.location.search at = and takes array [1]
+    var repoName = queryString.split("=")[1];
+    // this passes repoName into getRepoIssues function
+    getRepoIssues(repoName)
+    // this adds the repoName to top of page in search result
+    repoNameEl.textContent = repoName;
+};
+
+
+getRepoName();
