@@ -17,7 +17,8 @@ function getRepoIssues(repo){
             };
         });
     }else{
-        alert("There was a problem with your request!");
+        // if not successful, redirect to homepage
+        document.location.replace("./index.html");
     }
     })
 };

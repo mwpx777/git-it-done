@@ -104,5 +104,22 @@ function displayRepos(repos, searchTerm){
     repoContainerEl.appendChild(repoEl);
 }
 };
+
+function getFeaturedRepos(language){
+    // make request to url with search parameters +is:featured&sort+help-wanted
+    var apiUrl = "https://api.github.com/search/repositories?q=" + language + "+is:featured&sort=help-wanted-issues";
+
+    fetch(apiUrl).then(function(response){
+        if(response.ok){
+            // this will json parse the string
+            response.json().then(function(data){
+                // this will run displayRepos function above passing in arguments data.items (that came from fetch function) and language
+                displayRepos(data.items, language)
+            })
+        }else{
+            alert('Error:' + response.statusText);
+        }
+    });
+};
 // argument in this function call will get passed to 'user' in function above
 getUsersRepos()
